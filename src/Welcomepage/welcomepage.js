@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./welcomepage.css";
+import CreateMailPage from "../sendMailcomponent/CreateMailPage";
 
 function Welcomepage() {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ function Welcomepage() {
       </div>
       <Link to="/loginpage">Login</Link><br></br>
       <Link to="/signuppage">Signup</Link>
+     <CreateMailPage></CreateMailPage>
     </div>
   );
 }

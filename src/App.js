@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import LoginPage from "./loginpage/loginpage";
 import SignupPage from "./signuppage/signuppage";
 import Welcomepage from "./Welcomepage/welcomepage";
+import 'react-quill/dist/quill.snow.css';
 function App() {
   return (
     <Router>

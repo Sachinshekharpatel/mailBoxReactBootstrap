@@ -14,7 +14,7 @@ const LoginPage = () => {
 //       navigate("/");
 //     }
 //   }, [token]);
-  const handleSubmit = (e) => {
+  const LoginBtnhandler = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -36,6 +36,7 @@ const LoginPage = () => {
       )
       .then((response) => {
         console.log("User signed in successfully:", response.data);
+        localStorage.setItem("email", response.data.email);
         localStorage.setItem("token", response.data.idToken);
         navigate("/");
       })
@@ -56,7 +57,7 @@ const LoginPage = () => {
               <h4>Login</h4>
             </div>
             <div className="card-body">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={LoginBtnhandler}>
                 <div className="form-group">
                   <label htmlFor="email">Email address</label>
                   <input
