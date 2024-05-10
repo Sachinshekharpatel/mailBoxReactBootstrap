@@ -1,17 +1,23 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+//   let token = localStorage.getItem("token") || null;
 
+//   useEffect(() => {
+//     if (token !== null) {
+//       navigate("/");
+//     }
+//   }, [token]);
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-
     const data = {
       email: email,
       password: password,
@@ -44,7 +50,7 @@ const LoginPage = () => {
   return (
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+        <div className="col-md-6 col-sm-8 col-xs-12">
           <div className="card mt-5">
             <div className="card-header">
               <h4>Login</h4>
@@ -77,9 +83,9 @@ const LoginPage = () => {
                 >
                   Login
                 </button>
-                <div>
-                  Dont have an account?
-                  <Link to="/"> Signup here</Link>
+                <div className="mt-2">
+                  Don't have an account?{" "}
+                  <Link to="/signuppage">Signup here</Link>
                 </div>
               </form>
             </div>

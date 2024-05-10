@@ -2,7 +2,9 @@ import React, { useRef } from "react";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const SignupPage = () => {
+    const navigate = useNavigate();
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -33,6 +35,7 @@ const SignupPage = () => {
           emailRef.current.value = "";
           passwordRef.current.value = "";
           confirmPasswordRef.current.value = "";
+          navigate("/loginpage");
         })
         .catch((error) => {
           console.log("Error:", error);
