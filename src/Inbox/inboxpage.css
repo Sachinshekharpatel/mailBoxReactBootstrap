@@ -75,7 +75,7 @@
     border-radius: 30px;
     background-color: rgba(0,0,0,0.2);
     position: relative;
-    margin-left: 200px;
+    
   }
   
   .loader::before {
@@ -90,6 +90,12 @@
     border-radius: 30px;
     animation: moving 1s ease-in-out infinite;
     ;
+  }
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
   
   @keyframes moving {

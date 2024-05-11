@@ -58,7 +58,7 @@ function SendMailPage() {
   };
 
   return (
-    <Container className="mt-4">
+    <Container fluid className="send-mail-page-container mt-4">
       {mailDetail !== null && messageModal && (
         <Modal show={messageModal} onHide={modalCloseBtnHandler}>
           <Modal.Header closeButton>
@@ -96,34 +96,43 @@ function SendMailPage() {
         </Modal>
       )}
       <Row>
-        <Col md={3}></Col>
-        <Col md={9}>
+        <Col>
           <Button variant="secondary" onClick={() => navigate("/")}>
             Home
           </Button>
-          <Button variant="secondary" className="m-4" onClick={() => navigate("/inboxpage")}>
+          <Button
+            variant="secondary"
+            className="m-4"
+            onClick={() => navigate("/inboxpage")}
+          >
             Inbox
           </Button>
           <h2 className="mb-4">SendMailPage</h2>
           <ListGroup>
-            {mails.map((item) => (
-              <ListGroup.Item
-                key={Math.random()}
-                className="d-flex align-items-center"
-              >
-                <div className="flex-grow-1">
-                  <div>{item.to}</div>
-                </div>
-                <div className="readmeBtn">
-                  <Button
-                    onClick={() => readEmailHandler(item)}
-                    variant="primary"
-                  >
-                    Read Email
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            ))}
+            {mails.length > 0 ? (
+              mails.map((item) => (
+                <ListGroup.Item
+                  key={Math.random()}
+                  className="d-flex align-items-center"
+                >
+                  <div className="flex-grow-1">
+                    <div>{item.to}</div>
+                  </div>
+                  <div className="readmeBtn">
+                    <Button
+                      onClick={() => readEmailHandler(item)}
+                      variant="primary"
+                    >
+                      Read Email
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+              ))
+            ) : (
+              <div className="loader-container">
+                <div className="loader"></div>
+              </div>
+            )}
           </ListGroup>
         </Col>
       </Row>

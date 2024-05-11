@@ -7,6 +7,7 @@ import { Modal, Form, Button, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
 import { useDispatch } from "react-redux";
+
 function InboxPage() {
   const unreadMsgSelector = useSelector(
     (state) => state.sendmail.TotalUnreadMsg
@@ -18,6 +19,7 @@ function InboxPage() {
   const EmailOfUser = localStorage.getItem("emailMailBox");
   const [mailDetail, setMailDetail] = useState(null);
   const [messageModal, setMessageModal] = useState(false);
+
   useEffect(() => {
     axios
       .get(
@@ -62,7 +64,6 @@ function InboxPage() {
 
   const readEmailHandler = (item) => {
     setUnreadMsg(unreadMsg - 1);
-    console.log("read email", item);
     setMessageModal(true);
     setMailDetail(item);
     const newdata = {
@@ -75,19 +76,19 @@ function InboxPage() {
         newdata
       )
       .then((response) => {
-        const mailArray = mails.filter((itemMailArray) =>
-          itemMailArray.name == item.name ? newdata : itemMailArray
+        const mailArray = mails.map((itemMailArray) =>
+          itemMailArray.name === item.name ? newdata : itemMailArray
         );
         setMails(mailArray);
       });
   };
+
   const modalCloseBtnHandler = () => {
     setMessageModal(false);
     setMailDetail(null);
   };
 
   const deleteBtnHandler = (item) => {
-    console.log("delete email", item);
     axios
       .delete(
         `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${item.name}.json`
@@ -96,105 +97,112 @@ function InboxPage() {
   };
 
   return (
-    <Container className="mt-4">
-      {mailDetail !== null && messageModal && (
-        <Modal show={messageModal} onHide={modalCloseBtnHandler}>
-          <Modal.Header closeButton>
-            <Modal.Title>Mail Detail</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address of the Sender</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    value={mailDetail.to}
-                    placeholder="Enter email"
-                  />
-                </InputGroup>
-              </Form.Group>
+    <div>
+      <Container fluid className="inbox-page-container">
+        {mailDetail !== null && messageModal && (
+          <Modal show={messageModal} onHide={modalCloseBtnHandler}>
+            <Modal.Header closeButton>
+              <Modal.Title>Mail Detail</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email address of the Sender</Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      value={mailDetail.to}
+                      placeholder="Enter email"
+                    />
+                  </InputGroup>
+                </Form.Group>
 
-              <Form.Group controlId="formBasicMessage">
-                <Form.Label>Message</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    value={mailDetail.body}
-                    as="textarea"
-                    rows={3}
-                  />
-                </InputGroup>
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={modalCloseBtnHandler}>
-              Close
+                <Form.Group controlId="formBasicMessage">
+                  <Form.Label>Message</Form.Label>
+                  <InputGroup>
+                    <Form.Control
+                      value={mailDetail.body}
+                      as="textarea"
+                      rows={3}
+                    />
+                  </InputGroup>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={modalCloseBtnHandler}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
+        <Row className="justify-content-center">
+          <Col xs={12} md={9}>
+            <Button
+              variant="secondary"
+              className="m-4"
+              onClick={() => navigate("/sendmailpage")}
+            >
+              Total Unread : {unreadMsg}
             </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
-      <Row>
-        <Col md={3}></Col>
-        <Col md={9}>
-          <Button
-            variant="secondary"
-            className="m-4"
-            onClick={() => navigate("/sendmailpage")}
-          >
-            Total Unread : {unreadMsg}
-          </Button>
-          <Button
-            variant="secondary"
-            className="m-4"
-            onClick={() => navigate("/")}
-          >
-            Home Page
-          </Button>
-          <Button
-            variant="secondary"
-            className="m-4"
-            onClick={() => navigate("/sendmailpage")}
-          >
-            Sent Page
-          </Button>
-          <h2 className="mb-4">Inbox Page</h2>
-          <ListGroup>
-            {mails.length>0 ? mails.map((item) => (
-              <ListGroup.Item
-                key={Math.random()}
-                className="d-flex align-items-center"
-              >
-                {!item.read ? (
-                  <div>
-                    <button className="btn btn-primary circular-button"></button>
-                    <p className="text-danger">Unread</p>
-                  </div>
-                ) : (
-                  <p className="text-success">Readed</p>
-                )}
-                <div className="flex-grow-1">
-                  <div>{item.to}</div>
-                </div>
-                <div className="readmeBtn">
-                  <Button
-                    onClick={() => readEmailHandler(item)}
-                    variant="primary"
+            <Button
+              variant="secondary"
+              className="m-4"
+              onClick={() => navigate("/")}
+            >
+              Home Page
+            </Button>
+            <Button
+              variant="secondary"
+              className="m-4"
+              onClick={() => navigate("/sendmailpage")}
+            >
+              Sent Page
+            </Button>
+            <h2 className="mb-4">Inbox Page</h2>
+            <ListGroup>
+              {mails.length > 0 ? (
+                mails.map((item) => (
+                  <ListGroup.Item
+                    key={item.name}
+                    className="d-flex align-items-center"
                   >
-                    Read Email
-                  </Button>
-                  <Button
-                    onClick={() => deleteBtnHandler(item)}
-                    variant="danger"
-                  >
-                    Delete
-                  </Button>
+                    {!item.read ? (
+                      <div>
+                        <button className="btn btn-primary circular-button"></button>
+                        <p className="text-danger">Unread</p>
+                      </div>
+                    ) : (
+                      <p className="text-success">Readed</p>
+                    )}
+                    <div className="flex-grow-1">
+                      <div>{item.to}</div>
+                    </div>
+                    <div className="readmeBtn">
+                      <Button
+                        onClick={() => readEmailHandler(item)}
+                        variant="primary"
+                      >
+                        Read Email
+                      </Button>
+                      <Button
+                        onClick={() => deleteBtnHandler(item)}
+                        variant="danger"
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                ))
+              ) : (
+                <div className="loader-container">
+                  <div className="loader"></div>
                 </div>
-              </ListGroup.Item>
-            )):<div className="loader"></div>}
-          </ListGroup>
-        </Col>
-      </Row>
-    </Container>
+              )}
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }
 

@@ -65,7 +65,7 @@ function Welcomepage() {
   return (
     <div>
       <div className="containerWithShadow">
-        <h3 className="header-title">Welcome To SachinMessenger</h3>
+        <h3 className="header-title mt-2 mb-3">Welcome To SachinMessenger</h3>
       </div>
       <div className="header-container">
         <div className="inbox">

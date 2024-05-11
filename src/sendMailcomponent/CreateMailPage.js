@@ -127,7 +127,7 @@ const CreateMailPage = () => {
                 />
               </Form.Group>
 
-              <Button variant="primary" type="submit" className="mt-3 w-100">
+              <Button variant="primary" type="submit" className="mt-3 mb-3 w-100">
                 Send Mail
               </Button>
             </Form>
