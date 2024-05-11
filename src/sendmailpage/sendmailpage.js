@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, ListGroup } from "react-bootstrap";
-import "./inboxpage.css";
+import "./sendmailpage.css";
 import { Modal, Form, Button, InputGroup } from "react-bootstrap";
 
-function InboxPage() {
+function SendMailPage() {
   const navigate = useNavigate();
   const [mails, setMails] = useState([]);
   const EmailOfUser = localStorage.getItem("emailMailBox");
@@ -36,35 +36,27 @@ function InboxPage() {
     console.log("read email", item);
     setMessageModal(true);
     setMailDetail(item);
-    const newdata = {
-      ...item,
-      read: true,
-    };
-    axios
-      .put(
-        `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${item.name}.json`,
-        newdata
-      )
-      .then((response) => {
-        const mailArray = mails.filter((itemMailArray) =>
-          itemMailArray.name == item.name ? newdata : itemMailArray
-        );
-        setMails(mailArray);
-      });
+    // const newdata = {
+    //   ...item,
+    //   read: true,
+    // };
+    // axios
+    //   .put(
+    //     `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${item.name}.json`,
+    //     newdata
+    //   )
+    //   .then((response) => {
+    //     const mailArray = mails.filter((itemMailArray) =>
+    //       itemMailArray.name == item.name ? newdata : itemMailArray
+    //     );
+    //     setMails(mailArray);
+    //   });
   };
   const modalCloseBtnHandler = () => {
     setMessageModal(false);
     setMailDetail(null);
   };
 
-  const deleteBtnHandler = (item) => {
-    console.log("delete email", item);
-    axios
-      .delete(
-        `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${item.name}.json`
-      )
-      .then((response) => {});
-  };
   return (
     <Container className="mt-4">
       {mailDetail !== null && messageModal && (
@@ -109,24 +101,16 @@ function InboxPage() {
           <Button variant="secondary" onClick={() => navigate("/")}>
             Home
           </Button>
-          <Button variant="secondary" onClick={() => navigate("/sendmailpage")}>
-            Sent
+          <Button variant="secondary" onClick={() => navigate("/inboxpage")}>
+            Inbox
           </Button>
-          <h2 className="mb-4">Inbox Page</h2>
+          <h2 className="mb-4">SendMailPage</h2>
           <ListGroup>
             {mails.map((item) => (
               <ListGroup.Item
                 key={Math.random()}
                 className="d-flex align-items-center"
               >
-                {!item.read ? (
-                  <div>
-                    <button className="btn btn-primary circular-button"></button>
-                    <p className="text-danger">Unread</p>
-                  </div>
-                ) : (
-                  <p className="text-success">Readed</p>
-                )}
                 <div className="flex-grow-1">
                   <div>{item.to}</div>
                 </div>
@@ -136,12 +120,6 @@ function InboxPage() {
                     variant="primary"
                   >
                     Read Email
-                  </Button>
-                  <Button
-                    onClick={() => deleteBtnHandler(item)}
-                    variant="danger"
-                  >
-                    Delete
                   </Button>
                 </div>
               </ListGroup.Item>
@@ -153,4 +131,4 @@ function InboxPage() {
   );
 }
 
-export default InboxPage;
+export default SendMailPage;

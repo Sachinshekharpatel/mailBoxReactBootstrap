@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { Button, Container, Row, Col } from "react-bootstrap";
 import "./welcomepage.css";
 import axios from "axios";
 import CreateMailPage from "../sendMailcomponent/CreateMailPage";
@@ -11,7 +11,7 @@ function Welcomepage() {
   const unreadMsgSelector = useSelector(
     (state) => state.sendmail.TotalUnreadMsg
   );
-  
+
   const [unreadMsg, setUnreadMsg] = useState(unreadMsgSelector);
   const EmailOfUser = localStorage.getItem("emailMailBox");
   const dispatch = useDispatch();
@@ -58,11 +58,12 @@ function Welcomepage() {
   const inboxBtnHandler = () => {
     navigate("/inboxpage");
   };
-
+  const sendMailPageBtnHandler = () => {
+    navigate("/sendmailpage");
+  }
 
   return (
     <div>
-      
       <div className="containerWithShadow">
         <h3 className="header-title">Welcome To SachinMessenger</h3>
       </div>
@@ -78,6 +79,9 @@ function Welcomepage() {
             </svg>
             <span class="msg-count">{unreadMsg}</span>
           </button>
+        </div>
+        <div className="inbox">
+        <Button onClick={sendMailPageBtnHandler} variant="primary">Sent</Button>
         </div>
         <h5 style={{ color: "grey" }}>
           Hi, {localStorage.getItem("emailMailBox")}
