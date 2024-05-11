@@ -5,6 +5,7 @@ import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import "./createmailPage.css";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
 const CreateMailPage = () => {
   const dispatch = useDispatch();
@@ -22,8 +23,9 @@ const CreateMailPage = () => {
       ["clean"],
     ],
   };
+  const selectUnread = useSelector((state) => state.sendmail);
   const [body, setBody] = useState("");
-  const apikey = "AIzaSyCptE9QtAawOyBKdjmzWWZM5PegYF0W-g0";
+  // const apikey = "AIzaSyCptE9QtAawOyBKdjmzWWZM5PegYF0W-g0";
   const toRef = useRef();
 
   const subjectRef = useRef();
@@ -40,8 +42,11 @@ const CreateMailPage = () => {
       to: to,
       subject: subject,
       body: cleanBody(body),
+      read: false,
+
       myemail: localStorage.getItem("emailMailBox"),
     };
+    dispatch(sendMailBtnReduxStore.unreadMsgHandler(selectUnread+1));
 
     axios
       .post(
@@ -50,6 +55,20 @@ const CreateMailPage = () => {
       )
       .then((response) => {
         console.log("Mail Sent Successfully");
+        const dataToUpdate = response.data.name;
+        const newdata = {
+          to: to,
+          subject: subject,
+          body: cleanBody(body),
+          read: false,
+          myemail: localStorage.getItem("emailMailBox"),
+          name: dataToUpdate,
+        };
+        console.log(response.data.name);
+        axios.put(
+          `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${response.data.name}.json`,
+          newdata
+        );
         toRef.current.value = "";
         subjectRef.current.value = "";
         setBody("");
@@ -80,7 +99,7 @@ const CreateMailPage = () => {
               <Form.Group controlId="formTo">
                 <Form.Label>To</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="email"
                   placeholder="Enter recipient's email"
                   ref={toRef}
                   required

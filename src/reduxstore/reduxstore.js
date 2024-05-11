@@ -3,6 +3,7 @@ import {createSlice , configureStore} from '@reduxjs/toolkit'
 //after cretaing this redux function go to index.js file and wrap component inside provifer tag and pass store as props
 const editormodal = {
     editor : false,
+     TotalUnreadMsg : 0
 }
 
 const sendmailSlice = createSlice({
@@ -11,6 +12,11 @@ const sendmailSlice = createSlice({
     reducers : {
         editormodal : (state) => {
             state.editor = !state.editor
+        }
+        ,
+        unreadMsgHandler : (state , action) => {
+               console.log(action.payload);
+               state.TotalUnreadMsg = action.payload
         }
     }
 })

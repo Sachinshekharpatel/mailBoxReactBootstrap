@@ -1,14 +1,22 @@
-import React, { useEffect,useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {  useNavigate } from "react-router-dom";
+
 import "./welcomepage.css";
+import axios from "axios";
 import CreateMailPage from "../sendMailcomponent/CreateMailPage";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
 function Welcomepage() {
-    const dispatch = useDispatch();
-    const sendMail = useSelector((state) => state.sendmail.editor);
-    // const [sendMailModal, setSendMailModal] = useState(false);
+  const unreadMsgSelector = useSelector(
+    (state) => state.sendmail.TotalUnreadMsg
+  );
+  
+  const [unreadMsg, setUnreadMsg] = useState(unreadMsgSelector);
+  const EmailOfUser = localStorage.getItem("emailMailBox");
+  const dispatch = useDispatch();
+  const sendMail = useSelector((state) => state.sendmail.editor);
+  // const [sendMailModal, setSendMailModal] = useState(false);
   const navigate = useNavigate();
   let token = localStorage.getItem("tokenMailBox") || null;
 
@@ -16,27 +24,45 @@ function Welcomepage() {
     if (token == null) {
       navigate("/loginpage");
     }
-  }, [token ]);
+  }, [token, unreadMsg]);
+  useEffect(() => {
+    axios
+      .get(
+        `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
+      )
+      .then((response) => {
+        const mailDataAllUser = Object.values(response.data);
+        const mailArray = mailDataAllUser.filter(
+          (item) => item.myemail === EmailOfUser && item.read === false
+        );
+        setUnreadMsg(mailArray.length);
+        dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+      });
+  }, [unreadMsg, unreadMsgSelector]);
 
   useEffect(() => {
-      console.log(sendMail)
+    console.log(sendMail);
   }, [sendMail]);
 
   const logoutBtnHandler = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("tokenMailBox");
+    localStorage.removeItem("emailMailBox");
     navigate("/loginpage");
   };
 
   const sendMailBtnHandler = () => {
     // setSendMailModal(!sendMailModal);
+
     dispatch(sendMailBtnReduxStore.editormodal());
-  }
+  };
   const inboxBtnHandler = () => {
     navigate("/inboxpage");
-  }
+  };
+
 
   return (
     <div>
+      
       <div className="containerWithShadow">
         <h3 className="header-title">Welcome To SachinMessenger</h3>
       </div>
@@ -50,9 +76,12 @@ function Welcomepage() {
             >
               <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"></path>
             </svg>
+            <span class="msg-count">{unreadMsg}</span>
           </button>
         </div>
-        <h5 style={{ color: "grey" }}>Hi, {localStorage.getItem("emailMailBox")}</h5>
+        <h5 style={{ color: "grey" }}>
+          Hi, {localStorage.getItem("emailMailBox")}
+        </h5>
         <button onClick={() => logoutBtnHandler()} className="Btn">
           <div className="sign">
             <svg viewBox="0 0 512 512">
@@ -65,8 +94,8 @@ function Welcomepage() {
       </div>
       <div className="sendmail">
         <button onClick={() => sendMailBtnHandler()}>
-          <div class="svg-wrapper-1">
-            <div class="svg-wrapper">
+          <div className="svg-wrapper-1">
+            <div className="svg-wrapper">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -84,7 +113,7 @@ function Welcomepage() {
           <span>Compose</span>
         </button>
       </div>
-     {sendMail && <CreateMailPage></CreateMailPage>}
+      {sendMail && <CreateMailPage></CreateMailPage>}
     </div>
   );
 }
