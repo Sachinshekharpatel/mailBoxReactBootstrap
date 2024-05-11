@@ -4,35 +4,64 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, ListGroup } from "react-bootstrap";
 import "./inboxpage.css";
 import { Modal, Form, Button, InputGroup } from "react-bootstrap";
-
+import { useSelector } from "react-redux";
+import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
+import { useDispatch } from "react-redux";
 function InboxPage() {
+  const unreadMsgSelector = useSelector(
+    (state) => state.sendmail.TotalUnreadMsg
+  );
+  const dispatch = useDispatch();
+  const [unreadMsg, setUnreadMsg] = useState(unreadMsgSelector);
   const navigate = useNavigate();
   const [mails, setMails] = useState([]);
   const EmailOfUser = localStorage.getItem("emailMailBox");
   const [mailDetail, setMailDetail] = useState(null);
   const [messageModal, setMessageModal] = useState(false);
   useEffect(() => {
-    console.log(mailDetail, messageModal);
-  }, [mailDetail]);
-  useEffect(() => {
     axios
       .get(
-        "https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json"
+        `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
       )
       .then((response) => {
-        if (response.data === null) {
-          alert("No Emails");
-          navigate("/");
-        } else {
-          const mailDataAllUser = Object.values(response.data);
-          const mailArray = mailDataAllUser.filter(
-            (item) => item.myemail === EmailOfUser
-          );
-          setMails(mailArray);
-        }
+        const mailDataAllUser = Object.values(response.data);
+        const mailArray = mailDataAllUser.filter(
+          (item) => item.myemail === EmailOfUser && item.read === false
+        );
+        setUnreadMsg(mailArray.length);
+        dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
       });
+  }, [unreadMsg, unreadMsgSelector]);
+
+  useEffect(() => {
+    console.log(mailDetail, messageModal);
+    console.log(unreadMsgSelector);
+  }, [unreadMsgSelector]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("every 2 seconds");
+      axios
+        .get(
+          "https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json"
+        )
+        .then((response) => {
+          if (response.data === null) {
+            alert("No Emails");
+            navigate("/");
+          } else {
+            const mailDataAllUser = Object.values(response.data);
+            const mailArray = mailDataAllUser.filter(
+              (item) => item.myemail === EmailOfUser
+            );
+            setMails(mailArray);
+          }
+        });
+    }, 2000);
   }, [mails]);
+
   const readEmailHandler = (item) => {
+    setUnreadMsg(unreadMsg - 1);
     console.log("read email", item);
     setMessageModal(true);
     setMailDetail(item);
@@ -65,6 +94,7 @@ function InboxPage() {
       )
       .then((response) => {});
   };
+
   return (
     <Container className="mt-4">
       {mailDetail !== null && messageModal && (
@@ -106,15 +136,30 @@ function InboxPage() {
       <Row>
         <Col md={3}></Col>
         <Col md={9}>
-          <Button variant="secondary" className="m-4" onClick={() => navigate("/")}>
+          <Button
+            variant="secondary"
+            className="m-4"
+            onClick={() => navigate("/sendmailpage")}
+          >
+            Total Unread : {unreadMsg}
+          </Button>
+          <Button
+            variant="secondary"
+            className="m-4"
+            onClick={() => navigate("/")}
+          >
             Home Page
           </Button>
-          <Button variant="secondary" className="m-4" onClick={() => navigate("/sendmailpage")}>
+          <Button
+            variant="secondary"
+            className="m-4"
+            onClick={() => navigate("/sendmailpage")}
+          >
             Sent Page
           </Button>
           <h2 className="mb-4">Inbox Page</h2>
           <ListGroup>
-            {mails.map((item) => (
+            {mails.length>0 ? mails.map((item) => (
               <ListGroup.Item
                 key={Math.random()}
                 className="d-flex align-items-center"
@@ -145,7 +190,7 @@ function InboxPage() {
                   </Button>
                 </div>
               </ListGroup.Item>
-            ))}
+            )):<div className="loader"></div>}
           </ListGroup>
         </Col>
       </Row>
