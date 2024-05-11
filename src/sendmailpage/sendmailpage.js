@@ -101,7 +101,7 @@ function SendMailPage() {
           <Button variant="secondary" onClick={() => navigate("/")}>
             Home
           </Button>
-          <Button variant="secondary" onClick={() => navigate("/inboxpage")}>
+          <Button variant="secondary" className="m-4" onClick={() => navigate("/inboxpage")}>
             Inbox
           </Button>
           <h2 className="mb-4">SendMailPage</h2>

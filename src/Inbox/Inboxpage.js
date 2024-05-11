@@ -106,11 +106,11 @@ function InboxPage() {
       <Row>
         <Col md={3}></Col>
         <Col md={9}>
-          <Button variant="secondary" onClick={() => navigate("/")}>
-            Home
+          <Button variant="secondary" className="m-4" onClick={() => navigate("/")}>
+            Home Page
           </Button>
-          <Button variant="secondary" onClick={() => navigate("/sendmailpage")}>
-            Sent
+          <Button variant="secondary" className="m-4" onClick={() => navigate("/sendmailpage")}>
+            Sent Page
           </Button>
           <h2 className="mb-4">Inbox Page</h2>
           <ListGroup>
