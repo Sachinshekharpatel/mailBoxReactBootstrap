@@ -57,6 +57,12 @@ function InboxPage() {
     setMailDetail(null);
   };
 
+  const deleteBtnHandler = (item) => {
+    console.log("delete email", item);
+      axios.delete(`https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${item.name}.json`).then((response)=>{
+        
+      })
+  }
   return (
     <Container className="mt-4">
       {mailDetail !== null && messageModal && (
@@ -98,11 +104,13 @@ function InboxPage() {
       <Row>
         <Col md={3}></Col>
         <Col md={9}>
+         <Button variant="secondary" onClick={() => navigate("/")}>
+              Home
+            </Button>
           <h2 className="mb-4">Sent</h2>
           <ListGroup>
             {mails.map((item) => (
               <ListGroup.Item
-                onClick={() => readEmailHandler(item)}
                 key={Math.random()}
                 className="d-flex align-items-center"
               >
@@ -118,7 +126,18 @@ function InboxPage() {
                   <div>{item.to}</div>
                 </div>
                 <div className="readmeBtn">
-                  <Button variant="primary">Read Email</Button>
+                  <Button
+                    onClick={() => readEmailHandler(item)}
+                    variant="primary"
+                  >
+                    Read Email
+                  </Button>
+                  <Button
+                    onClick={() => deleteBtnHandler(item)}
+                    variant="danger"
+                  >
+                    Delete
+                  </Button>
                 </div>
               </ListGroup.Item>
             ))}
