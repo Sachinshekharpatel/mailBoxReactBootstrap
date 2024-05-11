@@ -61,4 +61,10 @@
     transform: rotate(180deg);
   }
   /* readmail Btn start */
-  
+  .circular-button {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    border-radius: 50%; /* Makes the button circular */
+    border: none; /* Remove default button border */
+    background-color: rgb(37, 37, 202); /* Set the button background color */
+}

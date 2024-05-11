@@ -69,14 +69,21 @@ function InboxPage() {
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address of the Sender</Form.Label>
                 <InputGroup>
-                  <Form.Control value={mailDetail.to} placeholder="Enter email" />
+                  <Form.Control
+                    value={mailDetail.to}
+                    placeholder="Enter email"
+                  />
                 </InputGroup>
               </Form.Group>
 
               <Form.Group controlId="formBasicMessage">
                 <Form.Label>Message</Form.Label>
                 <InputGroup>
-                  <Form.Control value={mailDetail.body} as="textarea" rows={3} />
+                  <Form.Control
+                    value={mailDetail.body}
+                    as="textarea"
+                    rows={3}
+                  />
                 </InputGroup>
               </Form.Group>
             </Form>
@@ -91,7 +98,7 @@ function InboxPage() {
       <Row>
         <Col md={3}></Col>
         <Col md={9}>
-          <h2 className="mb-4">Inbox</h2>
+          <h2 className="mb-4">Sent</h2>
           <ListGroup>
             {mails.map((item) => (
               <ListGroup.Item
@@ -100,25 +107,18 @@ function InboxPage() {
                 className="d-flex align-items-center"
               >
                 {!item.read ? (
-                  <div tabindex="0" className="plusButton">
-                    <svg
-                      className="plusIcon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 30 30"
-                    >
-                      <g mask="url(#mask0_21_345)">
-                        <path d="M13.75 23.75V16.25H6.25V13.75H13.75V6.25H16.25V13.75H23.75V16.25H16.25V23.75H13.75Z"></path>
-                      </g>
-                    </svg>
+                  <div>
+                    <button className="btn btn-primary circular-button"></button>
+                    <p className="text-danger">Unread</p>
                   </div>
                 ) : (
-                  <p>Readed</p>
+                  <p className="text-success">Readed</p>
                 )}
                 <div className="flex-grow-1">
                   <div>{item.to}</div>
                 </div>
                 <div className="readmeBtn">
-                  <button>Click To Read</button>
+                  <Button variant="primary">Read Email</Button>
                 </div>
               </ListGroup.Item>
             ))}
