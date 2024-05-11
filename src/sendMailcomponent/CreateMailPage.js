@@ -3,7 +3,11 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import ReactQuill from "react-quill"; // this library is used for body so that we can write text in the body like bold and italic and other option
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
+import "./createmailPage.css";
+import { useDispatch } from "react-redux";
+import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
 const CreateMailPage = () => {
+  const dispatch = useDispatch();
   const modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
@@ -36,7 +40,7 @@ const CreateMailPage = () => {
       to: to,
       subject: subject,
       body: cleanBody(body),
-      myemail: localStorage.getItem("email"),
+      myemail: localStorage.getItem("emailMailBox"),
     };
 
     axios
@@ -55,49 +59,63 @@ const CreateMailPage = () => {
       });
   };
 
+  const closeBtnHandler = () => {
+    dispatch(sendMailBtnReduxStore.editormodal());
+  };
   return (
-    <Container fluid>
-      <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}>
-          <h1 className="text-center mb-4">Create Mail</h1>
-          <Form onSubmit={SendMailHandler}>
-            <Form.Group controlId="formTo">
-              <Form.Label>To</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter recipient's email"
-                ref={toRef}
-                required
-              />
-            </Form.Group>
+    <div className="createMailPage">
+      <Container fluid>
+        <Row className="justify-content-center">
+          <Col xs={12} md={8} lg={6}>
+            <div className="closeBtnDiv">
+              <h1 className="text-center mt-2">Create Mail</h1>
+              <button onClick={closeBtnHandler} className="button">
+                <span className="X"></span>
+                <span className="Y"></span>
+                <span className="close">Close</span>
+              </button>
+            </div>
 
-            <Form.Group controlId="formSubject">
-              <Form.Label>Subject</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter subject"
-                ref={subjectRef}
-                required
-              />
-            </Form.Group>
+            <Form onSubmit={SendMailHandler}>
+              <Form.Group controlId="formTo">
+                <Form.Label>To</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter recipient's email"
+                  ref={toRef}
+                  required
+                />
+              </Form.Group>
 
-            <Form.Group controlId="formBody">
-              <Form.Label>Body</Form.Label>
-              <ReactQuill
-                theme="snow"
-                value={body}
-                onChange={setBody}
-                modules={modules}
-              />
-            </Form.Group>
+              <Form.Group controlId="formSubject">
+                <Form.Label>Subject</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter subject"
+                  ref={subjectRef}
+                  required
+                />
+              </Form.Group>
 
-            <Button variant="primary" type="submit" className="mt-3 w-100">
-              Send Mail
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+              <Form.Group controlId="formBody">
+                <Form.Label>Body</Form.Label>
+                <ReactQuill
+                  theme="snow"
+                  value={body}
+                  style={{ height: "auto", marginBottom: "10px" }}
+                  onChange={setBody}
+                  modules={modules}
+                />
+              </Form.Group>
+
+              <Button variant="primary" type="submit" className="mt-3 w-100">
+                Send Mail
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

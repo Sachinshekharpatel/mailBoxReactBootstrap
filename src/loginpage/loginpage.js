@@ -36,8 +36,8 @@ const LoginPage = () => {
       )
       .then((response) => {
         console.log("User signed in successfully:", response.data);
-        localStorage.setItem("email", response.data.email);
-        localStorage.setItem("token", response.data.idToken);
+        localStorage.setItem("emailMailBox", response.data.email);
+        localStorage.setItem("tokenMailBox", response.data.idToken);
         navigate("/");
       })
       .catch((error) => {

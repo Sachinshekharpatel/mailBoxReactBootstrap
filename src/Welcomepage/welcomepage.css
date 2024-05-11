@@ -75,3 +75,104 @@
   .Btn:active {
     transform: translate(2px ,2px);
   }
+  .inbox-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.082);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #464646;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .inbox-btn svg path {
+    fill: white;
+  }
+  .inbox-btn svg {
+    height: 17px;
+    transition: all 0.3s;
+  }
+  .msg-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    font-size: 0.7em;
+    color: rgb(0, 0, 0);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .inbox-btn:hover {
+    transform: scale(1.1);
+  }
+  /* //sendmail buuton style */
+
+  .sendmail button {
+    font-family: inherit;
+    font-size: 20px;
+    background: royalblue;
+    color: white;
+    padding: 0.7em 1em;
+    padding-left: 0.9em;
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .sendmail button span {
+    display: block;
+    margin-left: 0.3em;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .sendmail button svg {
+    display: block;
+    transform-origin: center center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sendmail button:hover .svg-wrapper {
+    animation: fly-1 0.6s ease-in-out infinite alternate;
+  }
+  
+  .sendmail button:hover svg {
+    transform: translateX(1.2em) rotate(45deg) scale(1.1);
+  }
+  
+  .sendmail button:hover span {
+    transform: translateX(5em);
+  }
+  
+  .sendmail button:active {
+    transform: scale(0.95);
+  }
+  .sendmail{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  @keyframes fly-1 {
+    from {
+      transform: translateY(0.1em);
+    }
+  
+    to {
+      transform: translateY(-0.1em);
+    }
+  }
+  
+  
