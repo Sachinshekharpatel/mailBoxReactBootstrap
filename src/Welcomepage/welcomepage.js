@@ -6,11 +6,19 @@ import axios from "axios";
 import CreateMailPage from "../sendMailcomponent/CreateMailPage";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import imageSrc from "./image.png";
 import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
+<<<<<<< HEAD
 import welcomePageSrc from "./welcomepage.png";
+=======
+import useFetch from "../customhooks/usefetch";
+>>>>>>> a66508fd2ed51904ded1c0a1fb493c73342063ce
 function Welcomepage() {
   const unreadMsgSelector = useSelector(
     (state) => state.sendmail.TotalUnreadMsg
+  );
+  const data = useFetch(
+    `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
   );
 
   const [unreadMsg, setUnreadMsg] = useState(unreadMsgSelector);
@@ -25,6 +33,7 @@ function Welcomepage() {
     if (token == null) {
       navigate("/loginpage");
     }
+<<<<<<< HEAD
     
   }, [token]);
   useEffect(() => {
@@ -41,6 +50,49 @@ function Welcomepage() {
         dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
       });
   }, [unreadMsg, unreadMsgSelector, sendMail]);
+=======
+    setUnreadMsg(unreadMsgSelector);
+    // console.log(unreadMsg,unreadMsgSelector);
+  }, [token, unreadMsg, unreadMsgSelector]);
+
+  useEffect(() => {
+    // console.log(data);
+    if (data !== null) {
+      const mailArray = data.filter(
+        (item) => item.myemail === EmailOfUser && item.read === false
+      );
+      setUnreadMsg(mailArray.length);
+      dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+    }
+  }, [unreadMsg, unreadMsgSelector, data]);
+  useEffect(() => {
+    console.log(data);
+    if (data !== null) {
+      const mailArray = data.filter(
+        (item) => item.myemail === EmailOfUser && item.read === false
+      );
+      // setUnreadMsg(mailArray.length);
+      // dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+    }
+  }, [unreadMsg, unreadMsgSelector, data]);
+
+  // useEffect( () => {
+  //   console.log(data);
+  //   axios
+  //     .get(
+  //       `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
+  //     )
+  //     .then((response) => {
+  //       // console.log(data);
+  //       const mailDataAllUser = Object.values(response.data);
+  //       const mailArray = mailDataAllUser.filter(
+  //         (item) => item.myemail === EmailOfUser && item.read === false
+  //       );
+  //       setUnreadMsg(mailArray.length);
+  //       dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+  //     });
+  // }, [unreadMsg, unreadMsgSelector]);
+>>>>>>> a66508fd2ed51904ded1c0a1fb493c73342063ce
 
   useEffect(() => {
     console.log(sendMail);
@@ -80,7 +132,7 @@ function Welcomepage() {
             >
               <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"></path>
             </svg>
-            <span class="msg-count">{unreadMsg}</span>
+            <span class="msg-count">{unreadMsgSelector}</span>
           </button>
         </div>
         <div className="inbox">
@@ -97,7 +149,6 @@ function Welcomepage() {
               <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
             </svg>
           </div>
-
           <div className="text">Logout</div>
         </button>
       </div>
@@ -122,7 +173,19 @@ function Welcomepage() {
           <span>Compose</span>
         </button>
       </div>
-      {sendMail && <CreateMailPage></CreateMailPage>}
+      {sendMail ? (
+        <CreateMailPage></CreateMailPage>
+      ) : (
+        <img
+          style={{
+            width: "70%",
+            height: "70%",
+            objectFit: "cover",
+            marginTop: "10px",
+          }}
+          src={imageSrc}
+        ></img>
+      )}
     </div>
   );
 }

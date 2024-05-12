@@ -4,34 +4,60 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, ListGroup } from "react-bootstrap";
 import "./sendmailpage.css";
 import { Modal, Form, Button, InputGroup } from "react-bootstrap";
-
+import useFetch from "../customhooks/usefetch";
 function SendMailPage() {
   const navigate = useNavigate();
   const [mails, setMails] = useState([]);
   const EmailOfUser = localStorage.getItem("emailMailBox");
   const [mailDetail, setMailDetail] = useState(null);
   const [messageModal, setMessageModal] = useState(false);
+  const data = useFetch(
+    `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
+  );
   useEffect(() => {
     console.log(mailDetail, messageModal);
   }, [mailDetail]);
   useEffect(() => {
-    axios
-      .get(
-        "https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json"
-      )
-      .then((response) => {
-        if (response.data === null) {
-          alert("No Emails");
-          navigate("/");
-        } else {
-          const mailDataAllUser = Object.values(response.data);
-          const mailArray = mailDataAllUser.filter(
-            (item) => item.myemail === EmailOfUser
-          );
-          setMails(mailArray);
-        }
-      });
-  }, [mails]);
+    if (data !== null) {
+      const mailArray = data.filter(
+        (item) => item.myemail === EmailOfUser
+      );
+      const noemail = data.filter(
+        (item) => item.myemail === EmailOfUser
+      );
+      setMails(mailArray);
+      if (noemail.length === 0) {
+        alert("No Emails");
+        navigate("/");
+      }
+    }
+  }, [data, mails]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       "https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json"
+  //     )
+  //     .then((response) => {
+  //       if (response.data === null) {
+  //         alert("No Emails");
+  //         navigate("/");
+  //       } else {
+  //         const mailDataAllUser = Object.values(response.data);
+  //         const mailArray = mailDataAllUser.filter(
+  //           (item) => item.myemail === EmailOfUser
+  //         );
+  //         const noemail = mailDataAllUser.filter(
+  //           (item) => item.myemail === EmailOfUser
+  //         );
+  //         setMails(mailArray);
+  //         if (noemail.length === 0) {
+  //           alert("No Emails");
+  //           navigate("/");
+  //         }
+  //       }
+  //     });
+  // }, [mails, data]);
+
   const readEmailHandler = (item) => {
     console.log("read email", item);
     setMessageModal(true);
@@ -56,7 +82,11 @@ function SendMailPage() {
     setMessageModal(false);
     setMailDetail(null);
   };
-
+  const logoutBtnHandler = () => {
+    localStorage.removeItem("tokenMailBox");
+    localStorage.removeItem("emailMailBox");
+    navigate("/loginpage");
+  };
   return (
     <Container fluid className="send-mail-page-container mt-4">
       {mailDetail !== null && messageModal && (
@@ -97,15 +127,26 @@ function SendMailPage() {
       )}
       <Row>
         <Col>
-          <Button variant="secondary" onClick={() => navigate("/")}>
+          <Button
+            variant="secondary"
+            onClick={() => navigate("/")}
+            className="m-3"
+          >
             Home
           </Button>
           <Button
             variant="secondary"
-            className="m-4"
+            className="m-3"
             onClick={() => navigate("/inboxpage")}
           >
             Inbox
+          </Button>
+          <Button
+            className="btn btn-danger m-3"
+            onClick={() => logoutBtnHandler()}
+            variant="secondary"
+          >
+            Logout
           </Button>
           <h2 className="mb-4">SendMailPage</h2>
           <ListGroup>
@@ -115,6 +156,10 @@ function SendMailPage() {
                   key={Math.random()}
                   className="d-flex align-items-center"
                 >
+                  <label>
+                    <input type="checkbox" class="input" />
+                    <span className="custom-checkbox"></span>
+                  </label>
                   <div className="flex-grow-1">
                     <div>{item.to}</div>
                   </div>

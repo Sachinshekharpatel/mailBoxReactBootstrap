@@ -52,17 +52,17 @@
   }
   
   .plusButton:hover>.plusIcon {
-    fill: rgb(42, 26, 187);
+    fill: #0C67ED;
     transform: rotate(180deg);
   }
   
   .plusButton:focus-visible>.plusIcon {
-    fill: rgb(33, 73, 193);
+    fill: #0C67ED;
     transform: rotate(180deg);
   }
   /* readmail Btn start */
   .circular-button {
-   background-color: rgb(37, 62, 202); /* Set the button background color */
+   background-color: #0C67ED; /* Set the button background color */
 } 
 
 /* loader div */
