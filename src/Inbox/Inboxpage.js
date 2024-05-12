@@ -93,7 +93,15 @@ function InboxPage() {
       .delete(
         `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${item.name}.json`
       )
-      .then((response) => {});
+      .then(() => {
+        console.log(item);
+        if (item.read == false) {
+          setUnreadMsg(unreadMsg - 1);
+          dispatch(
+            sendMailBtnReduxStore.unreadMsgHandler(unreadMsg - 1)
+          );
+        }
+      });
   };
 
   return (

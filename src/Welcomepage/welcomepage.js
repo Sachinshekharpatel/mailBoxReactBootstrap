@@ -7,6 +7,7 @@ import CreateMailPage from "../sendMailcomponent/CreateMailPage";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
+import welcomePageSrc from "./welcomepage.png";
 function Welcomepage() {
   const unreadMsgSelector = useSelector(
     (state) => state.sendmail.TotalUnreadMsg
@@ -24,7 +25,8 @@ function Welcomepage() {
     if (token == null) {
       navigate("/loginpage");
     }
-  }, [token, unreadMsg]);
+    
+  }, [token]);
   useEffect(() => {
     axios
       .get(
@@ -38,10 +40,11 @@ function Welcomepage() {
         setUnreadMsg(mailArray.length);
         dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
       });
-  }, [unreadMsg, unreadMsgSelector]);
+  }, [unreadMsg, unreadMsgSelector, sendMail]);
 
   useEffect(() => {
     console.log(sendMail);
+    // setUnreadMsg(unreadMsg + 1);
   }, [sendMail]);
 
   const logoutBtnHandler = () => {
@@ -60,7 +63,7 @@ function Welcomepage() {
   };
   const sendMailPageBtnHandler = () => {
     navigate("/sendmailpage");
-  }
+  };
 
   return (
     <div>
@@ -81,7 +84,9 @@ function Welcomepage() {
           </button>
         </div>
         <div className="inbox">
-        <Button onClick={sendMailPageBtnHandler} variant="primary">Sent</Button>
+          <Button onClick={sendMailPageBtnHandler} variant="primary">
+            Sent
+          </Button>
         </div>
         <h5 style={{ color: "grey" }}>
           Hi, {localStorage.getItem("emailMailBox")}
