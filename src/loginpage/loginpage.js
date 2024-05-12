@@ -2,10 +2,13 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import loginImageSrc from './loginpage.png';
+import loginImageSrc from "./loginpage.png";
+import { useDispatch } from "react-redux";
 const LoginPage = () => {
+  
   const navigate = useNavigate();
   const emailRef = useRef(null);
+
   const passwordRef = useRef(null);
   //   let token = localStorage.getItem("token") || null;
 
@@ -14,6 +17,7 @@ const LoginPage = () => {
   //       navigate("/");
   //     }
   //   }, [token]);
+
   const LoginBtnhandler = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
@@ -57,7 +61,10 @@ const LoginPage = () => {
               <h4>Login To SachinMessenger</h4>
             </div>
             <div className="card-header">
-              <img style={{ width: "30%" , height:"30%",borderRadius:"10%"}} src={loginImageSrc}></img>
+              <img
+                style={{ width: "30%", height: "30%", borderRadius: "10%" }}
+                src={loginImageSrc}
+              ></img>
             </div>
             <div className="card-body">
               <form onSubmit={LoginBtnhandler}>

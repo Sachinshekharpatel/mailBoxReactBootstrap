@@ -31,18 +31,28 @@ function Welcomepage() {
     }
     setUnreadMsg(unreadMsgSelector);
     // console.log(unreadMsg,unreadMsgSelector);
-  }, [token, unreadMsg,unreadMsgSelector]);
+  }, [token, unreadMsg, unreadMsgSelector]);
 
   useEffect(() => {
     // console.log(data);
-    if(data !== null ){
+    if (data !== null) {
+      const mailArray = data.filter(
+        (item) => item.myemail === EmailOfUser && item.read === false
+      );
+      setUnreadMsg(mailArray.length);
+      dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+    }
+  }, [unreadMsg, unreadMsgSelector, data]);
+  useEffect(() => {
+    console.log(data);
+    if (data !== null) {
       const mailArray = data.filter(
         (item) => item.myemail === EmailOfUser && item.read === false
       );
       // setUnreadMsg(mailArray.length);
       // dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
     }
-  }, [unreadMsg, unreadMsgSelector,data]);
+  }, [unreadMsg, unreadMsgSelector, data]);
 
   // useEffect( () => {
   //   console.log(data);
