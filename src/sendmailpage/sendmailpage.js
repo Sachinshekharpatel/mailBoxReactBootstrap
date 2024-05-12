@@ -19,12 +19,8 @@ function SendMailPage() {
   }, [mailDetail]);
   useEffect(() => {
     if (data !== null) {
-      const mailArray = data.filter(
-        (item) => item.myemail === EmailOfUser
-      );
-      const noemail = data.filter(
-        (item) => item.myemail === EmailOfUser
-      );
+      const mailArray = data.filter((item) => item.myemail === EmailOfUser);
+      const noemail = data.filter((item) => item.myemail === EmailOfUser);
       setMails(mailArray);
       if (noemail.length === 0) {
         alert("No Emails");

@@ -59,6 +59,14 @@ function InboxPage() {
               (item) => item.myemail === EmailOfUser
             );
             setMails(mailArray);
+            const noemail = mailDataAllUser.filter(
+              (item) => item.myemail === EmailOfUser
+            );
+            setMails(mailArray);
+            if (noemail.length === 0) {
+              alert("No Emails");
+              navigate("/");
+            }
           }
         });
     }, 2000);
