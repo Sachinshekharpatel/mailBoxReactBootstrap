@@ -7,11 +7,15 @@ import { Modal, Form, Button, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
 import { useDispatch } from "react-redux";
-
+import useFetch from "../customhooks/usefetch";
 function InboxPage() {
   const unreadMsgSelector = useSelector(
     (state) => state.sendmail.TotalUnreadMsg
   );
+  const data = useFetch(
+    `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
+  );
+  // above data variable is custom  hook is used for fetching data from firebase
   const dispatch = useDispatch();
   const [unreadMsg, setUnreadMsg] = useState(unreadMsgSelector);
   const navigate = useNavigate();
@@ -19,21 +23,44 @@ function InboxPage() {
   const EmailOfUser = localStorage.getItem("emailMailBox");
   const [mailDetail, setMailDetail] = useState(null);
   const [messageModal, setMessageModal] = useState(false);
+  const [totalmail, setTotalmail] = useState(0);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
+  //     )
+  //     .then((response) => {
+  //       const mailDataAllUser = Object.values(response.data);
+  //       const mailArray = mailDataAllUser.filter(
+  //         (item) => item.myemail === EmailOfUser && item.read === false
+  //       );
+  //       setUnreadMsg(mailArray.length);
+  //       dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+  //     });
+  // }, [unreadMsg, unreadMsgSelector]);
 
   useEffect(() => {
-    axios
-      .get(
-        `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
-      )
-      .then((response) => {
-        const mailDataAllUser = Object.values(response.data);
-        const mailArray = mailDataAllUser.filter(
-          (item) => item.myemail === EmailOfUser && item.read === false
-        );
-        setUnreadMsg(mailArray.length);
-        dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
-      });
-  }, [unreadMsg, unreadMsgSelector]);
+    // console.log(data);
+    if (data !== null) {
+      const mailArray = data.filter(
+        (item) => item.myemail === EmailOfUser && item.read === false
+      );
+      setUnreadMsg(mailArray.length);
+      dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+    }
+    if (data !== null) {
+      const mailArray = data.filter((item) => item.myemail === EmailOfUser);
+      const noemail = data.filter(
+        (item) => item.myemail === EmailOfUser
+      );
+
+      if (noemail.length === 0) {
+        alert("No Emails");
+        navigate("/");
+      }
+      setTotalmail(mailArray.length);
+    }
+  }, [unreadMsg, unreadMsgSelector, data]);
 
   useEffect(() => {
     console.log(mailDetail, messageModal);
@@ -204,9 +231,12 @@ function InboxPage() {
                   </ListGroup.Item>
                 ))
               ) : (
-                <div className="loader-container">
-                  <div className="loader"></div>
-                </div>
+                <>
+                  <div className="loader-container">
+                    <div className="loader"></div>
+                  </div>
+                  {/* <p>No Mails for Now</p> */}
+                </>
               )}
             </ListGroup>
           </Col>

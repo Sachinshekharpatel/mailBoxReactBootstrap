@@ -4,34 +4,60 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, ListGroup } from "react-bootstrap";
 import "./sendmailpage.css";
 import { Modal, Form, Button, InputGroup } from "react-bootstrap";
-
+import useFetch from "../customhooks/usefetch";
 function SendMailPage() {
   const navigate = useNavigate();
   const [mails, setMails] = useState([]);
   const EmailOfUser = localStorage.getItem("emailMailBox");
   const [mailDetail, setMailDetail] = useState(null);
   const [messageModal, setMessageModal] = useState(false);
+  const data = useFetch(
+    `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
+  );
   useEffect(() => {
     console.log(mailDetail, messageModal);
   }, [mailDetail]);
   useEffect(() => {
-    axios
-      .get(
-        "https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json"
-      )
-      .then((response) => {
-        if (response.data === null) {
-          alert("No Emails");
-          navigate("/");
-        } else {
-          const mailDataAllUser = Object.values(response.data);
-          const mailArray = mailDataAllUser.filter(
-            (item) => item.myemail === EmailOfUser
-          );
-          setMails(mailArray);
-        }
-      });
-  }, [mails]);
+    if (data !== null) {
+      const mailArray = data.filter(
+        (item) => item.myemail === EmailOfUser
+      );
+      const noemail = data.filter(
+        (item) => item.myemail === EmailOfUser
+      );
+      setMails(mailArray);
+      if (noemail.length === 0) {
+        alert("No Emails");
+        navigate("/");
+      }
+    }
+  }, [data, mails]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       "https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json"
+  //     )
+  //     .then((response) => {
+  //       if (response.data === null) {
+  //         alert("No Emails");
+  //         navigate("/");
+  //       } else {
+  //         const mailDataAllUser = Object.values(response.data);
+  //         const mailArray = mailDataAllUser.filter(
+  //           (item) => item.myemail === EmailOfUser
+  //         );
+  //         const noemail = mailDataAllUser.filter(
+  //           (item) => item.myemail === EmailOfUser
+  //         );
+  //         setMails(mailArray);
+  //         if (noemail.length === 0) {
+  //           alert("No Emails");
+  //           navigate("/");
+  //         }
+  //       }
+  //     });
+  // }, [mails, data]);
+
   const readEmailHandler = (item) => {
     console.log("read email", item);
     setMessageModal(true);

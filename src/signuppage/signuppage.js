@@ -55,7 +55,7 @@ const SignupPage = () => {
     <Container>
       <Row className="justify-content-center">
         <Col xs={12} sm={8} md={6} lg={4}>
-          <h1 className="text-center mb-4">Sign Up</h1>
+          <h2 className="text-center mb-3 mt-3 " style={{color:"#0d6efd"}}>SachinMessenger</h2>
           <div
             style={{
               boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
@@ -68,7 +68,7 @@ const SignupPage = () => {
           >
             <div className="card-header">
               <img
-                style={{ width: "40%", height: "40%" ,borderRadius:"10px",marginBottom:'3px'}}
+                style={{ width: "60%", height: "40%" ,borderRadius:"10px",marginBottom:'3px'}}
                 src={registerImageSrc}
               ></img>
             </div>

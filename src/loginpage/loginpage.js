@@ -54,10 +54,10 @@ const LoginPage = () => {
         <div className="col-md-6 col-sm-8 col-xs-12">
           <div className="card mt-5">
             <div className="card-header">
-              <h4>Login</h4>
+              <h4>Login To SachinMessenger</h4>
             </div>
             <div className="card-header">
-              <img style={{ width: "30%" , height:"30%"}} src={loginImageSrc}></img>
+              <img style={{ width: "30%" , height:"30%",borderRadius:"10%"}} src={loginImageSrc}></img>
             </div>
             <div className="card-body">
               <form onSubmit={LoginBtnhandler}>

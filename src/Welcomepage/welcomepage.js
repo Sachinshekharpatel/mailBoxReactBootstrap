@@ -8,9 +8,13 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import imageSrc from "./image.png";
 import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
+import useFetch from "../customhooks/usefetch";
 function Welcomepage() {
   const unreadMsgSelector = useSelector(
     (state) => state.sendmail.TotalUnreadMsg
+  );
+  const data = useFetch(
+    `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
   );
 
   const [unreadMsg, setUnreadMsg] = useState(unreadMsgSelector);
@@ -25,21 +29,37 @@ function Welcomepage() {
     if (token == null) {
       navigate("/loginpage");
     }
-  }, [token, unreadMsg]);
+    setUnreadMsg(unreadMsgSelector);
+    // console.log(unreadMsg,unreadMsgSelector);
+  }, [token, unreadMsg,unreadMsgSelector]);
+
   useEffect(() => {
-    axios
-      .get(
-        `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
-      )
-      .then((response) => {
-        const mailDataAllUser = Object.values(response.data);
-        const mailArray = mailDataAllUser.filter(
-          (item) => item.myemail === EmailOfUser && item.read === false
-        );
-        setUnreadMsg(mailArray.length);
-        dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
-      });
-  }, [unreadMsg, unreadMsgSelector]);
+    // console.log(data);
+    if(data !== null ){
+      const mailArray = data.filter(
+        (item) => item.myemail === EmailOfUser && item.read === false
+      );
+      // setUnreadMsg(mailArray.length);
+      // dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+    }
+  }, [unreadMsg, unreadMsgSelector,data]);
+
+  // useEffect( () => {
+  //   console.log(data);
+  //   axios
+  //     .get(
+  //       `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData.json`
+  //     )
+  //     .then((response) => {
+  //       // console.log(data);
+  //       const mailDataAllUser = Object.values(response.data);
+  //       const mailArray = mailDataAllUser.filter(
+  //         (item) => item.myemail === EmailOfUser && item.read === false
+  //       );
+  //       setUnreadMsg(mailArray.length);
+  //       dispatch(sendMailBtnReduxStore.unreadMsgHandler(mailArray.length));
+  //     });
+  // }, [unreadMsg, unreadMsgSelector]);
 
   useEffect(() => {
     console.log(sendMail);
@@ -78,7 +98,7 @@ function Welcomepage() {
             >
               <path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"></path>
             </svg>
-            <span class="msg-count">{unreadMsg}</span>
+            <span class="msg-count">{unreadMsgSelector}</span>
           </button>
         </div>
         <div className="inbox">

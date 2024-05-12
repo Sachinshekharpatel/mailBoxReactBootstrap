@@ -23,7 +23,7 @@ const CreateMailPage = () => {
       ["clean"],
     ],
   };
-  const selectUnread = useSelector((state) => state.sendmail);
+  const selectUnread = useSelector((state) => state.sendmail.TotalUnreadMsg);
   const [body, setBody] = useState("");
   // const apikey = "AIzaSyCptE9QtAawOyBKdjmzWWZM5PegYF0W-g0";
   const toRef = useRef();
