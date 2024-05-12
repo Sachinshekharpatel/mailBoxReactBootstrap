@@ -2,18 +2,18 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import loginImageSrc from './loginpage.png';
 const LoginPage = () => {
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-//   let token = localStorage.getItem("token") || null;
+  //   let token = localStorage.getItem("token") || null;
 
-//   useEffect(() => {
-//     if (token !== null) {
-//       navigate("/");
-//     }
-//   }, [token]);
+  //   useEffect(() => {
+  //     if (token !== null) {
+  //       navigate("/");
+  //     }
+  //   }, [token]);
   const LoginBtnhandler = (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
@@ -55,6 +55,9 @@ const LoginPage = () => {
           <div className="card mt-5">
             <div className="card-header">
               <h4>Login</h4>
+            </div>
+            <div className="card-header">
+              <img style={{ width: "30%" , height:"30%"}} src={loginImageSrc}></img>
             </div>
             <div className="card-body">
               <form onSubmit={LoginBtnhandler}>

@@ -66,6 +66,7 @@ function InboxPage() {
     setUnreadMsg(unreadMsg - 1);
     setMessageModal(true);
     setMailDetail(item);
+    console.log("read email", item);
     const newdata = {
       ...item,
       read: true,
@@ -94,6 +95,11 @@ function InboxPage() {
         `https://fir-cypresstestcase-default-rtdb.firebaseio.com/MailBoxData/${item.name}.json`
       )
       .then((response) => {});
+  };
+  const logoutBtnHandler = () => {
+    localStorage.removeItem("tokenMailBox");
+    localStorage.removeItem("emailMailBox");
+    navigate("/loginpage");
   };
 
   return (
@@ -136,27 +142,30 @@ function InboxPage() {
           </Modal>
         )}
         <Row className="justify-content-center">
-          <Col xs={12} md={9}>
-            <Button
-              variant="secondary"
-              className="m-4"
-              onClick={() => navigate("/sendmailpage")}
-            >
+          <Col xs={16} md={12}>
+            <Button variant="secondary" className="m-3" disabled>
               Total Unread : {unreadMsg}
             </Button>
             <Button
               variant="secondary"
-              className="m-4"
+              className="m-3"
               onClick={() => navigate("/")}
             >
               Home Page
             </Button>
             <Button
               variant="secondary"
-              className="m-4"
+              className="m-3"
               onClick={() => navigate("/sendmailpage")}
             >
               Sent Page
+            </Button>
+            <Button
+              className="btn btn-danger m-3"
+              onClick={() => logoutBtnHandler()}
+              variant="secondary"
+            >
+              Logout
             </Button>
             <h2 className="mb-4">Inbox Page</h2>
             <ListGroup>
@@ -187,6 +196,7 @@ function InboxPage() {
                       <Button
                         onClick={() => deleteBtnHandler(item)}
                         variant="danger"
+                        className="ms-2"
                       >
                         Delete
                       </Button>

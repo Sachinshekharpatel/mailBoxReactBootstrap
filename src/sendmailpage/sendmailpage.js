@@ -56,7 +56,11 @@ function SendMailPage() {
     setMessageModal(false);
     setMailDetail(null);
   };
-
+  const logoutBtnHandler = () => {
+    localStorage.removeItem("tokenMailBox");
+    localStorage.removeItem("emailMailBox");
+    navigate("/loginpage");
+  };
   return (
     <Container fluid className="send-mail-page-container mt-4">
       {mailDetail !== null && messageModal && (
@@ -97,15 +101,26 @@ function SendMailPage() {
       )}
       <Row>
         <Col>
-          <Button variant="secondary" onClick={() => navigate("/")}>
+          <Button
+            variant="secondary"
+            onClick={() => navigate("/")}
+            className="m-3"
+          >
             Home
           </Button>
           <Button
             variant="secondary"
-            className="m-4"
+            className="m-3"
             onClick={() => navigate("/inboxpage")}
           >
             Inbox
+          </Button>
+          <Button
+            className="btn btn-danger m-3"
+            onClick={() => logoutBtnHandler()}
+            variant="secondary"
+          >
+            Logout
           </Button>
           <h2 className="mb-4">SendMailPage</h2>
           <ListGroup>
@@ -115,6 +130,10 @@ function SendMailPage() {
                   key={Math.random()}
                   className="d-flex align-items-center"
                 >
+                  <label>
+                    <input type="checkbox" class="input" />
+                    <span className="custom-checkbox"></span>
+                  </label>
                   <div className="flex-grow-1">
                     <div>{item.to}</div>
                   </div>

@@ -3,8 +3,9 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import registerImageSrc from "./registerpage.jpg";
 const SignupPage = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -35,9 +36,11 @@ const SignupPage = () => {
           emailRef.current.value = "";
           passwordRef.current.value = "";
           confirmPasswordRef.current.value = "";
+          alert("User Registered Successfully");
           navigate("/loginpage");
         })
         .catch((error) => {
+          alert("Please enter valid credentials");
           console.log("Error:", error);
         });
     } else {
@@ -63,6 +66,12 @@ const SignupPage = () => {
               backgroundColor: "#fff",
             }}
           >
+            <div className="card-header">
+              <img
+                style={{ width: "40%", height: "40%" ,borderRadius:"10px",marginBottom:'3px'}}
+                src={registerImageSrc}
+              ></img>
+            </div>
             <Form>
               <Form.Group controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
