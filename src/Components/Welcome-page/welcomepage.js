@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Button, Container, Row, Col } from "react-bootstrap";
 import "./welcomepage.css";
 import axios from "axios";
-import CreateMailPage from "../sendMailcomponent/CreateMailPage";
+import CreateMailPage from "../send-Mail-component/CreateMailPage";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
+import { sendMailBtnReduxStore } from "../../Redux-Store/reduxstore/reduxstore";
 
 function Welcomepage() {
   const unreadMsgSelector = useSelector(
@@ -15,7 +15,7 @@ function Welcomepage() {
 
   const EmailOfUser = localStorage.getItem("emailMailBox");
   const dispatch = useDispatch();
-  const sendMail = useSelector((state) => state.sendmail.editor);
+  const sendMail = useSelector((state) => state.sendmail.editor); //this is used for to open modal when click on compose button
   // const [sendMailModal, setSendMailModal] = useState(false);
   const navigate = useNavigate();
   let token = localStorage.getItem("tokenMailBox") || null;

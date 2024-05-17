@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, ListGroup } from "react-bootstrap";
 import "./sendmailpage.css";
 import { Modal, Form, Button, InputGroup } from "react-bootstrap";
-import useFetch from "../customhooks/usefetch";
+import useFetch from "../../Hooks/custom-hook/usefetch";
+// custom hook is used only on the sendmailpage 
 function SendMailPage() {
   const navigate = useNavigate();
   const [mails, setMails] = useState([]);
@@ -27,7 +28,7 @@ function SendMailPage() {
         navigate("/");
       }
     }
-  }, [data, mails]);
+  }, [data, mails.length]);
   // useEffect(() => {
   //   axios
   //     .get(

@@ -5,7 +5,7 @@ import { Container, Row, Col, ListGroup } from "react-bootstrap";
 import "./inboxpage.css";
 import { Modal, Form, Button, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
+import { sendMailBtnReduxStore } from "../../Redux-Store/reduxstore/reduxstore";
 import { useDispatch } from "react-redux";
 
 function InboxPage() {

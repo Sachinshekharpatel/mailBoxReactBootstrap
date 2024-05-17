@@ -15,7 +15,7 @@ const sendmailSlice = createSlice({
         }
         ,
         unreadMsgHandler : (state , action) => {
-               console.log(action.payload);
+               console.log('unreade msg count : ',action.payload);
                state.TotalUnreadMsg = action.payload
         },
       

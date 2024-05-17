@@ -6,7 +6,7 @@ import axios from "axios";
 import "./createmailPage.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { sendMailBtnReduxStore } from "../reduxstore/reduxstore";
+import { sendMailBtnReduxStore } from "../../Redux-Store/reduxstore/reduxstore";
 const CreateMailPage = () => {
   const dispatch = useDispatch();
   const modules = {
